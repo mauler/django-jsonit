@@ -31,4 +31,3 @@ def catch_ajax_exceptions(func):
             raise
 
     return dec
-

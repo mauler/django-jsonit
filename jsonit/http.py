@@ -115,7 +115,11 @@ class JSONResponse(http.HttpResponse):
         if self.extra_context:
             content['extra_context'] = self.extra_context
         try:
-            return encode(content)
+            encoded = encode(content)
+            if self.request.GET.get("format") == 'jsonp':
+                callback = self.request.GET.get("callback", "alert")
+                return u"%s(%s)" % (callback, encoded)
+            return encoded
         except Exception, e:
             if exception is not None:
                 raise
